@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../pages/Home.vue'
 import Login from '../pages/Login.vue'
+import PostList from '../pages/PostList.vue'
+import PostPublish from '../pages/PostPublish.vue'
 // 使用插件
 Vue.use(VueRouter)
 
@@ -9,8 +11,17 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   // 配置路由规则
   routes: [
-    { path: '/', component: Home, name: 'home' },
+    {
+      path: '/',
+      component: Home,
+      name: 'home',
+      children: [
+        { path: 'post-list', component: PostList, name: 'post-list' },
+        { path: 'post-publish', component: PostPublish, name: 'post-publish' }
+      ]
+    },
     { path: '/login', component: Login, name: 'login' }
+
   ]
 })
 

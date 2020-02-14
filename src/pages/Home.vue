@@ -2,14 +2,45 @@
   <div class="home">
     <!-- 布局 -->
     <el-container>
-      <el-aside width="200px">Aside</el-aside>
+      <el-aside width="200px">
+        <div class="logo">黑马头条</div>
+        <!--
+          el-menu: 导航菜单
+            background-color="#545c64" 导航的背景色
+            text-color="#fff" 文字颜色
+            active-text-color="#ffd04b" 选中的文字颜色
+            router: 如果为true，点击导航的时候就会跳转 会把菜单的index属性作为地址进行跳转。
+
+            default-active： 默认高亮的导航菜单
+          el-menu-item: 一个导航菜单项
+          -->
+          <el-menu
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+            router
+            :default-active="$route.path"
+          >
+          <el-menu-item index="/post-list">
+            <i class="el-icon-menu"></i>
+            <span slot="title">文章列表</span>
+          </el-menu-item>
+          <el-menu-item index="/post-publish">
+            <i class="el-icon-setting"></i>
+            <span slot="title">发布文章</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
       <el-container>
         <el-header>
           <img :src="$axios.defaults.baseURL + user.head_img" alt="">
           <div class="nickname">{{user.nickname}}</div>
           <a href="javascript:;" class="logout" @click="logout">退出</a>
         </el-header>
-        <el-main>Main</el-main>
+        <el-main>
+          <!-- 嵌套路由的出口 -->
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -70,17 +101,21 @@ export default {
   }
 
   .el-aside {
-    background-color: #D3DCE6;
+    background-color: #545c64;
     color: #333;
     text-align: center;
-    line-height: 200px;
+    .logo {
+      height: 60px;
+      line-height: 60px;
+      background-color: #333;
+      color: #fff;
+      font-weight: 700;
+    }
   }
 
   .el-main {
     background-color: #E9EEF3;
     color: #333;
-    text-align: center;
-    line-height: 160px;
   }
 }
 </style>
