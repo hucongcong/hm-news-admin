@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 2020-02-14 10:00:00
+
+    var d = new Date()
+    var d2 = new Date('2020-02-14 10:00:00')
+    var time = (d - d2) / 1000 / 60 / 60 | 0
+    console.log(time)
+
+    if (time < 24) {
+      console.log(time, '小时前')
+    } else {
+      console.log('2020-02-14 10:00:00')
+    }
+  </script>
+</body>
+</html>

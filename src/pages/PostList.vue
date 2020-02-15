@@ -18,6 +18,14 @@
     <el-table
       :data="postList"
       style="width: 100%">
+      <!-- 表格的序号 -->
+      <el-table-column
+        type="index"
+        label="序号"
+        width="100"
+        :index="indexMethod"
+      >
+      </el-table-column>
       <el-table-column
         prop="title"
         label="标题"
@@ -60,6 +68,28 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!--
+      分页组件
+      layout： 用于指定分页的展示的内容
+      background: 可以为分页按钮添加背景色。
+      total: 用于指定总共有多少条数
+      page-size: 用于指定每页显示的条数，默认值是10
+      :current-page: 用于指定当前页是第几页
+      @current-change 当前页发生了改变的时候会触发
+      :page-sizes="[100, 200, 300, 400]" 用于指定可选的每页的条数
+    -->
+    <el-pagination
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      background
+      :page-size="pageSize"
+      :current-page="pageIndex"
+      @current-change="handleCurrentChange"
+      :page-sizes="[3, 6, 10, 20]"
+      @size-change="handleSizeChange"
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -69,7 +99,9 @@ export default {
     return {
       postList: [],
       pageIndex: 1,
-      pageSize: 5
+      pageSize: 3,
+      // 用于记录总共有多少条数据
+      total: 0
     }
   },
   created () {
@@ -84,11 +116,28 @@ export default {
           pageSize: this.pageSize
         }
       })
-      const { statusCode, data } = res.data
+      const { statusCode, data, total } = res.data
       if (statusCode === 200) {
         this.postList = data
-        console.log(this.postList)
+        this.total = total
       }
+    },
+    handleCurrentChange (val) {
+      // console.log(val)
+      this.pageIndex = val
+      // 重新发送请求，加载数据
+      this.getPostList()
+    },
+    handleSizeChange (val) {
+      // 如果每页显示的条数变了，应该从第一页开始重新展示
+      this.pageIndex = 1
+      this.pageSize = val
+      this.getPostList()
+    },
+    // 控制序号
+    indexMethod (index) {
+      // 序号应该添加上前面页数的总条数
+      return (this.pageIndex - 1) * this.pageSize + index + 1
     }
   }
 }
